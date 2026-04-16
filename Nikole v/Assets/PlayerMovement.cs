@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 /// <summary>
 /// Script de movimiento para jugador 2D en Unity.
@@ -8,6 +10,10 @@
 [RequireComponent(typeof(Collider2D))]
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Vida")]
+    [SerializeField] private TextMeshProUGUI healthText;
+    [SerializeField] private int maxHealth = 100;
+
     // ─────────────────────────────────────────────
     //  PARÁMETROS DE MOVIMIENTO
     // ─────────────────────────────────────────────
@@ -60,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
     // ─────────────────────────────────────────────
     private void Awake()
     {
+        healthText.text = $"Health: {maxHealth}";
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();            // null si no existe
         spriteRenderer = GetComponent<SpriteRenderer>(); // null si no existe
@@ -76,6 +83,13 @@ public class PlayerMovement : MonoBehaviour
         HandleJumpInput();
         FlipSprite();
         UpdateAnimator();
+
+        if (maxHealth <= 0)
+        {
+            Destroy(gameObject);
+        }  
+
+
     }
 
     private void FixedUpdate()
@@ -247,5 +261,26 @@ public class PlayerMovement : MonoBehaviour
         if (groundCheck == null) return;
         Gizmos.color = isGrounded ? Color.green : Color.red;
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("Enemy"))
+        {
+            maxHealth -= 20;
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.CompareTag("Enemy"))
+        {
+            maxHealth -= 20; 
+        }
+    }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if(collision.gameObject.CompareTag("Enemy"))
+        {
+            maxHealth -= 30;
+        }
     }
 }
