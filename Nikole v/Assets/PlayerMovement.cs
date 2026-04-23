@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Vida")]
     [SerializeField] private TextMeshProUGUI healthText;
-    [SerializeField] private int maxHealth = 100;
+    [SerializeField] private int maxHealth = 1000;
 
     // ─────────────────────────────────────────────
     //  PARÁMETROS DE MOVIMIENTO
@@ -83,6 +83,8 @@ public class PlayerMovement : MonoBehaviour
         HandleJumpInput();
         FlipSprite();
         UpdateAnimator();
+
+        healthText.text = $"Health: {maxHealth}";
 
         if (maxHealth <= 0)
         {
@@ -266,21 +268,21 @@ public class PlayerMovement : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Enemy"))
         {
-            maxHealth -= 20;
+            maxHealth -= 2;
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.CompareTag("Enemy"))
         {
-            maxHealth -= 20; 
+            maxHealth -= 2; 
         }
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
         if(collision.gameObject.CompareTag("Enemy"))
         {
-            maxHealth -= 30;
+            maxHealth -= 3;
         }
     }
 }
