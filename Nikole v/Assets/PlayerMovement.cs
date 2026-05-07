@@ -11,6 +11,8 @@ using TMPro;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Vida")]
+    public Slider VidaSlider;
+    // public Button BotonPotencia;
     [SerializeField] private TextMeshProUGUI healthText;
     [SerializeField] private int maxHealth = 1000;
 
@@ -64,6 +66,11 @@ public class PlayerMovement : MonoBehaviour
     // ─────────────────────────────────────────────
     //  UNITY CALLBACKS
     // ─────────────────────────────────────────────
+    public void Potenciador()
+    {
+        VidaSlider.value += 5f;
+        maxHealth += 5;
+    }
     private void Awake()
     {
         healthText.text = $"Health: {maxHealth}";
@@ -73,6 +80,7 @@ public class PlayerMovement : MonoBehaviour
 
         defaultGravityScale = rb.gravityScale;
         jumpsRemaining = extraJumps + 1;
+        // Button btn = BotonPotencia.GetComponent<Button>(); 
     }
 
     private void Update()
@@ -84,9 +92,9 @@ public class PlayerMovement : MonoBehaviour
         FlipSprite();
         UpdateAnimator();
 
-        healthText.text = $"Health: {maxHealth}";
+       healthText.text = $"Health: {maxHealth}";
 
-        if (maxHealth <= 0)
+        if (VidaSlider.value <= 0)
         {
             Destroy(gameObject);
         }  
@@ -268,21 +276,22 @@ public class PlayerMovement : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Enemy"))
         {
-            maxHealth -= 2;
+            // maxHealth -= 2;
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.CompareTag("Enemy"))
         {
-            maxHealth -= 2; 
+            // maxHealth -= 2; 
         }
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
         if(collision.gameObject.CompareTag("Enemy"))
         {
-            maxHealth -= 3;
+            smaxHealth -= 3;
+            VidaSlider.value -= 3; 
         }
     }
 }
